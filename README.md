@@ -16,5 +16,6 @@ export FILE=$(basename ${REPONAME}_${VERSION}_linux_amd64.tar.gz)
 echo $SUM $FILE > /tmp/${REPONAME}_${VERSION}_sha512_checksums.txt
 rm bin/sensu-rri
 
-# paste new sha512 checksum into asset file!
+
+# paste new sha512 checksum into asset file, edit URL and create github release for new version.
 ```
