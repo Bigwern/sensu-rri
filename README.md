@@ -3,7 +3,7 @@
 ```
 # set this:
 #
-export VERSION=v0.1.0
+export VERSION=v1.0.0
 
 
 # just paste this

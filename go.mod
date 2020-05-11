@@ -1,4 +1,4 @@
-module github.com/Bigwern/sensu-rri-check
+module github.com/DENICeG/sensu-rri
 
 go 1.14
 
