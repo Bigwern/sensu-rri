@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -12,14 +11,13 @@ import (
 )
 
 var (
-	regacc, password, rriServer, domainToCheck string
-	rriport                                    = 51131 //default
-
-	rriIsAlive                    = false
+	regacc          string
+	password        string
+	rriServer       string
+	domainToCheck   string
+	rriport                       = 51131
 	rriResponseTime time.Duration = 0
-	client          *rri.Client
-
-	log = logrus.New()
+	log                           = logrus.New()
 )
 
 func setAliasesViaWhiteflag() {
@@ -31,8 +29,6 @@ func setAliasesViaWhiteflag() {
 }
 
 func main() {
-	var err error
-
 	// Parse commandline parameters
 	setAliasesViaWhiteflag()
 	whiteflag.ParseCommandLine()
@@ -48,25 +44,17 @@ func main() {
 
 	rriServer = whiteflag.GetString("rriserver") + ":" + strconv.Itoa(rriport)
 
-	fmt.Println(rriServer)
 	// create client and perform command
-	client, _ = rri.NewClient(rriServer)
-
-	if client == nil {
-		client, err = rri.NewClient(rriServer)
-		if err != nil {
-			rriIsAlive = false
-		}
-	}
-
-	doCheckQuery()
-
-}
-
-func doCheckQuery() {
-	err := client.Login(regacc, password)
+	client, err := rri.NewClient(rriServer)
 	if err != nil {
 		log.Errorln(err)
+		os.Exit(2)
+	}
+
+	err = client.Login(regacc, password)
+	if err != nil {
+		log.Errorln(err)
+		os.Exit(2)
 	}
 
 	timeBegin := time.Now()
@@ -74,25 +62,22 @@ func doCheckQuery() {
 	rriResponse, err := client.SendQuery(checkQuery)
 
 	if err != nil {
-		rriIsAlive = false
 		rriResponseTime = 0
 		log.Errorln("technical error: ", err)
+		os.Exit(2)
 	} else {
 		if rriResponse.IsSuccessful() {
-			rriIsAlive = true
 			rriResponseTime = time.Since(timeBegin)
 
 			log.WithFields(logrus.Fields{
-				"ResponseInfo":      rriResponse.InfoMsg(),
 				"ResultField":       rriResponse.FirstField("Status"),
 				"Result":            rriResponse.Result(),
-				"IsAlive":           rriIsAlive,
 				"DurationFromAgent": rriResponseTime,
 			}).Info("SENSU-RRI-Check successful")
 			_ = client.Logout()
+
 			os.Exit(0)
 		} else {
-			rriIsAlive = false
 			rriResponseTime = 0
 			log.Errorf("Result: %s, ErrorMsg: %s", rriResponse.Result(), rriResponse.ErrorMsg())
 			_ = client.Logout()
