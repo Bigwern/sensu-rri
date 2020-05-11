@@ -4,5 +4,5 @@ metadata:
   name: sensu-rri
   namespace: yourspace
 spec:
-  sha512: 9708515b753b4675d4c2d73b47c6fa2487b323ed8bdf1dade40740e2047b2704c4e0d0b80350e0fd2bdb818d530eae1a0ce0f363e93cac6fd53519e9d8b1ae84
-  url: https://github.com/Bigwern/sensu-rri/releases/download/v0.0.1/sensu-rri_0.0.1_linux_amd64.tar.gz
+  sha512: e674f07934263765d0c906bc27e099e4d40f6c100e5c08df28d1646168d16bad729d54d9afe3e5b9803bdf44c233c0245b3c9be09ee4dbbebbe5020b6596de95
+  url: https://github.com/Bigwern/sensu-rri/releases/download/v0.0.2/sensu-rri_v0.0.2_linux_amd64.tar.gz
