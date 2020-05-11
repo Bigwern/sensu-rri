@@ -2,7 +2,7 @@ type: Asset
 api_version: core/v2
 metadata:
   name: sensu-rri
-  namespace: yourspace
+  namespace: default
 spec:
   sha512: e674f07934263765d0c906bc27e099e4d40f6c100e5c08df28d1646168d16bad729d54d9afe3e5b9803bdf44c233c0245b3c9be09ee4dbbebbe5020b6596de95
   url: https://github.com/Bigwern/sensu-rri/releases/download/v0.0.2/sensu-rri_v0.0.2_linux_amd64.tar.gz
