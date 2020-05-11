@@ -44,7 +44,6 @@ func main() {
 
 	rriServer = whiteflag.GetString("rriserver") + ":" + strconv.Itoa(rriport)
 
-	// create client and perform command
 	client, err := rri.NewClient(rriServer)
 	if err != nil {
 		log.Errorln(err)
@@ -64,25 +63,19 @@ func main() {
 	if err != nil {
 		rriResponseTime = 0
 		log.Errorln("technical error: ", err)
+		_ = client.Logout()
 		os.Exit(2)
-	} else {
-		if rriResponse.IsSuccessful() {
-			rriResponseTime = time.Since(timeBegin)
-
-			log.WithFields(logrus.Fields{
-				"ResultField":       rriResponse.FirstField("Status"),
-				"Result":            rriResponse.Result(),
-				"DurationFromAgent": rriResponseTime,
-			}).Info("SENSU-RRI-Check successful")
-			_ = client.Logout()
-
-			os.Exit(0)
-		} else {
-			rriResponseTime = 0
-			log.Errorf("Result: %s, ErrorMsg: %s", rriResponse.Result(), rriResponse.ErrorMsg())
-			_ = client.Logout()
-		}
 	}
 
-	os.Exit(2)
+	if rriResponse.IsSuccessful() {
+		rriResponseTime = time.Since(timeBegin)
+		log.WithFields(logrus.Fields{"ResultField": rriResponse.FirstField("Status"), "Result": rriResponse.Result(), "DurationFromAgent": rriResponseTime}).Info("SENSU-RRI-Check successful")
+		_ = client.Logout()
+		os.Exit(0)
+	} else {
+		rriResponseTime = 0
+		log.Errorf("Result: %s, ErrorMsg: %s", rriResponse.Result(), rriResponse.ErrorMsg())
+		_ = client.Logout()
+		os.Exit(2)
+	}
 }
