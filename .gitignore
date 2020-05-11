@@ -1,2 +1,2 @@
-sensu/rricheck.yaml
 workspace-sensu-rri.code-workspace
+sensu/check_sensu_rri.yaml
