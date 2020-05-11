@@ -1,0 +1,16 @@
+---
+type: CheckConfig
+metadata:
+  name: sensu-rri-check
+  namespace: yournamespace
+spec:
+  command: "sensu-rri --dom yourdomain --reg yourregacc --pw yourpassword --host rri.denic.de"
+  high_flap_threshold: 0
+  interval: 60
+  low_flap_threshold: 0
+  round_robin: true
+  publish: true
+  runtime_assets:
+  - sensu-rri
+  subscriptions:
+  - yousubscription
